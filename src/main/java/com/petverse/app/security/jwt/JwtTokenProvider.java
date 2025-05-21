@@ -7,6 +7,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+@Data
 @Component
 public class JwtTokenProvider {
 
@@ -71,17 +74,14 @@ public class JwtTokenProvider {
             return true;
         } catch (ExpiredJwtException ex) {
             System.out.println("JWT expired: " + ex.getMessage());
-            throw ex;
         } catch (MalformedJwtException ex) {
             System.out.println("Invalid JWT format: " + ex.getMessage());
-            throw ex;
         } catch (SignatureException ex) {
             System.out.println("Invalid JWT signature: " + ex.getMessage());
-            throw ex;
         } catch (Exception ex) {
             System.out.println("JWT validation error: " + ex.getMessage());
-            throw ex;
         }
+        return false;
     }
 
     private Claims parseClaims(String token) {
@@ -91,4 +91,5 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 }

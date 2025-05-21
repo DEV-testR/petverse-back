@@ -54,13 +54,21 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenProvider.generateAccessToken(email);
         String refreshToken = jwtTokenProvider.generateRefreshToken(email);
 
-        return AuthResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .refreshTokenExpirationMs(jwtTokenProvider.getRefreshTokenExpirationMs())
+                .build();
     }
 
     @Override
     public String refreshToken(String refreshToken) {
-        jwtTokenProvider.validateToken(refreshToken);
         String email = jwtTokenProvider.getEmailFromToken(refreshToken);
         return jwtTokenProvider.generateAccessToken(email);
+    }
+
+    @Override
+    public boolean validateToken(String token) {
+        return jwtTokenProvider.validateToken(token);
     }
 }

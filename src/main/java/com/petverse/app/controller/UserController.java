@@ -29,6 +29,7 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal UserPrincipal principal) {
         User user = userService.getCurrentUser(principal.getId());
+        user.setPassword(null);
         return ResponseEntity.ok(user);
     }
 

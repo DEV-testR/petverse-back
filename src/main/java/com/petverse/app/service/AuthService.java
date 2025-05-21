@@ -16,6 +16,8 @@ public interface AuthService {
     AuthResponse login(LoginRequest request);
 
     String refreshToken(String refreshToken);
+
+    boolean validateToken(String token);
 }
 
 
