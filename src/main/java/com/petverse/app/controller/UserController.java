@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -31,6 +33,11 @@ public class UserController {
         User user = userService.getCurrentUser(principal.getId());
         user.setPassword(null);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     // 3. ล็อกเอาต์

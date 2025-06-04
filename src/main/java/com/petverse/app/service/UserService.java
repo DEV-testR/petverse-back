@@ -6,6 +6,8 @@ import com.petverse.app.entity.Pet;
 import com.petverse.app.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserService {
 
@@ -20,6 +22,8 @@ public interface UserService {
     Pet updatePet(Long userId, Long petId, PetRequest request);
 
     User getCurrentUser(Long id);
+
+    List<User> getUsers();
 }
 
 
