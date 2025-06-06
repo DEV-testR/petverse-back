@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -48,9 +50,25 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @GetMapping("/login/pin")
+    public ResponseEntity<AuthResponse> loginWithPin(@RequestParam String email, @RequestParam String pin) {
+        AuthResponse authResponse = authService.loginWithPin(email, pin);
+        return ResponseEntity.ok(authResponse);
+    }
+
+    @GetMapping("/email/validate")
+    public ResponseEntity<Void> validateEmail(@RequestParam String email) {
+        boolean isExistsMail = authService.validateEmail(email);
+        if (isExistsMail) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refreshToken(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
-        if (refreshToken == null || !authService.validateToken(refreshToken)) {
+        if (refreshToken == null || authService.validateToken(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
@@ -62,7 +80,7 @@ public class AuthController {
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponse> refreshToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
-        if (refreshToken == null || !authService.validateToken(refreshToken)) {
+        if (refreshToken == null || authService.validateToken(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 

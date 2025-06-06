@@ -37,6 +37,8 @@ public class User {
     @Column(nullable = false)
     private String password;  // เข้ารหัสแล้ว
 
+    private String pin;  // เข้ารหัสแล้ว
+
     private String fullName;
 
     private String phone;

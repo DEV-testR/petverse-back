@@ -15,7 +15,11 @@ public interface AuthService {
 
     AuthResponse login(LoginRequest request);
 
+    AuthResponse loginWithPin(String email, String pin);
+
     String refreshToken(String refreshToken);
+
+    boolean validateEmail(String email);
 
     boolean validateToken(String token);
 }
